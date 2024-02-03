@@ -6,11 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,13 +28,13 @@ public class Robot extends TimedRobot {
 	private RobotContainer m_robotContainer;
 
 
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
 	@Override
 	public void robotInit() {
-
 		autonomousSelector.setDefaultOption("Liam smokes Crack(Place & BackUp)", "Default");
 		autonomousSelector.addOption("Balance", "Balance");
 		autonomousSelector.addOption("The Meth head is a munch (SHoot and Balance", "THE GOAT");
@@ -44,7 +47,14 @@ public class Robot extends TimedRobot {
 		// autonomous chooser on the dashboard.
 		m_robotContainer = new RobotContainer();
 		PortForwarder.add(5800, "10.29.45.10", 5800);
-		CameraServer.startAutomaticCapture();
+
+		// Camera 
+		UsbCamera camera = CameraServer.startAutomaticCapture();
+		// Optionally set camera properties like resolution and FPS
+		// camera.setResolution(320, 240);
+		// camera.setFPS(30);
+		ShuffleboardTab tab = Shuffleboard.getTab("My Camera Tab");
+		tab.add("Camera Feed", camera).withWidget("CameraStream");
 	}
 
   /**
